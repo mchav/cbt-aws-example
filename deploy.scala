@@ -13,7 +13,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 
 object Deploy extends App {
-  // set CBT home here 
+  // set CBT home here : should be the directory of the cbt version that supports AWS
   val CBT_HOME   = "/home/chav/Code/Scala/cbt"
   val cloudCBT   = System.getProperty("user.dir") + "/cbt"
   val CLOUD_CBT  = Array[String]("build", "compatibility", "nailgun_launcher", "realpath", "stage1", "stage2")
@@ -116,6 +116,10 @@ object Deploy extends App {
    */
 
   val cbtHome  = new File(CBT_HOME)
+  val cbtCloudDir = new File(cloudCBT)
+  if (!cbtCloudDir.exists) {
+    cbtCloudDir.mkdir()
+  }
   cbtHome.listFiles.filter(CLOUD_CBT contains _.getName).map(src => {
       copy(src, new File(cloudCBT + "/" + src.getName ), JAVA_SRC contains src.getName )
     })
