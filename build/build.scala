@@ -8,7 +8,7 @@ import java.util.jar._
 import java.util.Enumeration
 
 class Build( context: Context ) extends BasicBuild( context ) {
-  override def runClass = "Deploy"
+  override def runClass = "Deploy" // make runCbt to test locally
   override def compileTarget = {
     val deploymentDirectory = System.getProperty("user.dir") + "/cbt"
     val deploymentFile = new File(deploymentDirectory)

@@ -1,0 +1,5 @@
+rm -r ./build/target
+rm -r ./cache
+rm cbt.zip
+rm cbt.last-success
+rm -r cbt

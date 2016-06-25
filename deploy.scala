@@ -86,8 +86,8 @@ object Deploy extends App {
 
   def copy(source: File, destination: File, copyTarget: Boolean): Unit = source match {
     case src if src.isDirectory => {
-        destination.mkdir()
         if ( (source.getName != "target") || copyTarget) {
+          destination.mkdir()
           source.listFiles.map(file => {
             copy( file, new File(destination.toString + "/" + file.getName), copyTarget ) 
           })
