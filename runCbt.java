@@ -17,6 +17,7 @@ import java.nio.file.*;
 import com.amazonaws.services.lambda.runtime.Context;
 
 public class runCbt {
+    @SuppressWarnings("unchecked")
     public String cbtHandler(String args, Context Context) {
         File dir = new File(".");
         File[] filesList = dir.listFiles();
@@ -35,15 +36,10 @@ public class runCbt {
 
         try {
             // Convert File to a URL
-            URL url = file.toURL();          // file:/c:/myclasses/
+            URL url = file.toURI().toURL();  
             URL[] urls = new URL[]{url};
-
-            // Create a new class loader with the directory
             ClassLoader cl = new URLClassLoader(urls);
-
-            // Load in the class; MyClass.class should be located in
-            // the directory file:/c:/myclasses/com/mycompany
-            Class cls = cl.loadClass("startCbt");
+            Class<?> cls = cl.loadClass("startCbt");
             cls.getMethod("main", String[].class).invoke((Object) null, (Object) null);
         } catch (Exception e) {
             e.printStackTrace();
