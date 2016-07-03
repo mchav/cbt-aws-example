@@ -13,18 +13,17 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.*;
 
-
 import com.amazonaws.services.lambda.runtime.Context;
 
-public class runCbt {
+public class RunCbt {
     public static void main(String[] args) {
-        runCbt run = new runCbt();
-        run.cbtHandler("usage", null);
+        return;
     }
 
     @SuppressWarnings("unchecked")
-    public String cbtHandler(String args, Context Context) {
-        File dir = new File("."); //to test locally change this to "./cbt"
+    public String cbtHandler() {
+        String args = "compile";
+        File dir = new File("."); //to test locally change this to "target"
         File[] filesList = dir.listFiles();
         for (File file : filesList) {
             File src = file;
@@ -41,20 +40,21 @@ public class runCbt {
         String[] splitArgs = args.split("\\s+");
         Object[] params = { splitArgs };
         File file = new File("/tmp");
-
+        int res = 0;
         try {
             // Convert File to a URL
             URL url = file.toURI().toURL();  
             URL[] urls = new URL[]{url};
             ClassLoader cl = new URLClassLoader(urls);
-            Class<?> cls = cl.loadClass("startCbt");
-            cls.getMethod("main", String[].class).invoke((Object) null, params);
+            Class<?> cls = cl.loadClass("StartCbt");
+            res = (int) cls.getMethod("run", String[].class).invoke((Object) null, params);
+        } catch (StartCbt.ExitException e) {
+            res = 0;
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed.";
-        } 
+            res = 0;
+        }
         
-        return "It's lit!!!";
+        return String.valueOf(res);
     }
 
     public static void copy(File source, File destination) throws IOException {

@@ -9,13 +9,6 @@ import java.util.Enumeration
 
 class Build( context: Context ) extends BasicBuild( context ) {
   override def runClass = "Deploy" // make runCbt to test locally
-  override def compileTarget = {
-    val deploymentDirectory = System.getProperty("user.dir") + "/cbt"
-    val deploymentFile = new File(deploymentDirectory)
-    if (!deploymentFile.exists())
-      deploymentFile.mkdir()
-    deploymentFile
-  }
   override def dependencies = (
     super.dependencies // don't forget super.dependencies here
     ++
@@ -24,7 +17,8 @@ class Build( context: Context ) extends BasicBuild( context ) {
       MavenDependency( "com.amazonaws", "aws-lambda-java-core", "1.1.0"),
       MavenDependency( "com.amazonaws", "aws-java-sdk-s3", "1.11.9"),
       MavenDependency( "com.amazonaws", "aws-java-sdk-events", "1.11.9" ),
-      MavenDependency( "com.amazonaws", "aws-lambda-java-events", "1.3.0")
+      MavenDependency( "com.amazonaws", "aws-lambda-java-events", "1.3.0"),
+      MavenDependency( "com.google.jimfs", "jimfs", "1.1")
     )
   )
 }
